@@ -1,0 +1,34 @@
+1000 pièces :
+price_1U4pZ808REn5UJ3ZkORexy1s
+
+5500 pièces :
+price_1U4pb608REn5UJ3ZNzpmyPzp
+
+12000 pièces :
+price_1U4pfg08REn5UJ3ZiSCKMhTf
+
+Pass Premium :
+price_1U4pg108REn5UJ3ZNSwz7rP0
+
+Cyber Nexora :
+price_1U4pgL08REn5UJ3ZpsR2iX9a
+
+Crystal :
+price_1U4pgg08REn5UJ3ZO7rjeiM2
+
+Founder :
+price_1U4pgx08REn5UJ3ZFp2fNjez
+
+
+
+
+
+
+Produit Stripe	Prix	Ce que reçoit le joueur
+Poporia – 1 000 pièces	0,99 €	1 000 🪙
+Poporia – 5 500 pièces	4,99 €	5 500 🪙
+Poporia – 12 000 pièces	9,99 €	12 000 🪙
+Poporia – Pass Premium Saison 1	4,99 €	Pass Premium
+Poporia – Skin Cyber Nexora	1,99 €	Skin Cyber
+Poporia – Skin Crystal	2,99 €	Skin Crystal
+Poporia – Skin Founder	4,99 €	Skin Founder

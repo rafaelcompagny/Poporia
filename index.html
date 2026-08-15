@@ -31,15 +31,23 @@
     <section id="homeScreen" class="screen home-screen">
       <header class="mobile-topbar glass">
         <div class="player-pill"><div id="homeAvatar" class="avatar">P</div><div><b id="homePlayer">Invité</b><small id="homeRank">Explorateur</small></div></div>
-        <div class="currency life-pill">❤️ <span id="homeLives">5/5</span></div><div class="currency">🪙 <span id="homeCoins">0</span></div><button id="leaderboardBtn" class="icon-btn" title="Classements">🏆</button><button id="shopBtn" class="icon-btn" title="Boutique">🛍️</button><button id="accountBtn" class="icon-btn">👤</button>
+        <div class="currency life-pill">❤️ <span id="homeLives">5/5</span></div><div class="currency">🪙 <span id="homeCoins">0</span></div><button id="leaderboardBtn" class="icon-btn" title="Classements">🏆</button><button id="shopBtn" class="icon-btn" title="Boutique">🛍️</button><button id="notificationsBtn" class="icon-btn notif-btn" title="Notifications">🔔<i id="notifBadge" class="notif-badge hidden">0</i></button><button id="accountBtn" class="icon-btn">👤</button>
       </header>
       <main class="home-main">
         <section class="hero glass">
-          <div class="hero-copy"><span class="eyebrow">SAISON 1 · POPORIA CITY</span><h1>POPORIA</h1><p>Associe les Pops, crée des pouvoirs et traverse des mondes de plus en plus difficiles.</p><button id="playBtn" class="btn primary big">Continuer <span>▶</span></button></div>
+          <div class="hero-copy"><span class="eyebrow">SAISON 1 · POPORIA CITY</span><h1>POPORIA</h1><p>Associe les Pops, crée des pouvoirs et traverse des mondes de plus en plus difficiles.</p><div class="hero-actions"><button id="playBtn" class="btn primary big">Continuer <span>▶</span></button><button id="tutorialLevelBtn" class="btn secondary">🎓 Niveau Tutoriel</button><button id="tutorialBtn" class="btn secondary">📖 Guide</button><button id="creditsBtn" class="btn ghost">✨ Crédits</button></div></div>
           <div class="hero-visual pop-showcase"><div class="show-pop sp-red">●</div><div class="show-pop sp-blue">★</div><div class="show-pop sp-green">◆</div><div class="show-pop sp-yellow">✦</div><div class="show-pop sp-purple">⬡</div><div class="show-pop sp-pink">♥</div></div>
         </section>
-        <section class="quick-grid"><article class="mini-card glass"><span>⭐</span><div><b id="homeStars">0</b><small>Étoiles</small></div></article><article class="mini-card glass"><span>🏆</span><div><b id="homeLevel">1</b><small>Niveau max</small></div></article><article class="mini-card glass"><span>☁️</span><div><b id="syncState">Local</b><small>Sauvegarde</small></div></article></section>
+        <section class="quick-grid">
+<article class="mini-card glass"><span>⭐</span><div><b id="homeStars">0</b><small>Étoiles</small></div></article>
+<article class="mini-card glass"><span>🏆</span><div><b id="homeLevel">1</b><small>Niveau max</small></div></article>
+<article class="mini-card glass"><span>☁️</span><div><b id="syncState">Local</b><small>Sauvegarde</small></div></article>
+<button id="missionsBtn" class="mini-card action-mini glass"><span>✅</span><div><b>Missions</b><small>Quotidiennes</small></div></button>
+<button id="clanBtn" class="mini-card action-mini glass"><span>🛡️</span><div><b>Clan</b><small>Équipe</small></div></button>
+<button id="eventsBtn" class="mini-card action-mini glass"><span>🎉</span><div><b>Événements</b><small>Temporaires</small></div></button><button id="infiniteBtn" class="mini-card action-mini glass"><span>♾️</span><div><b>Mode Infini</b><small>Record personnel</small></div></button><button id="friendsBtn" class="mini-card action-mini glass"><span>🤝</span><div><b>Amis</b><small>Profil social</small></div></button><button id="achievementsBtn" class="mini-card action-mini glass"><span>🏅</span><div><b>Succès</b><small>Récompenses</small></div></button><button id="chestsBtn" class="mini-card action-mini glass"><span>🎁</span><div><b>Coffres</b><small>Ouvrir</small></div></button><button id="skinsBtn" class="mini-card action-mini glass"><span>🎨</span><div><b>Skins Pops</b><small>Personnaliser</small></div></button><button id="seasonRankBtn" class="mini-card action-mini glass"><span>🥇</span><div><b>Classement</b><small>Saisonnier</small></div></button><button id="seasonBtn" class="mini-card action-mini glass"><span>🎟️</span><div><b>Pass Saison</b><small>Saison 1</small></div></button>
+</section>
         <section class="daily-card glass"><div><span class="eyebrow">DÉFI DE MONDE</span><h3>🏙️ City Rush</h3><p>Nouveau défi dans <b id="worldTimer">--:--:--</b> · Vie suivante <b id="lifeTimer">MAX</b></p></div><button id="dailyRewardBtn" class="btn secondary">🎁 Cadeau</button></section>
+<section class="event-home glass"><div class="event-home-icon">🎉</div><div><span class="eyebrow">EN CE MOMENT</span><h3 id="eventHomeTitle">Festival Poporia</h3><p id="eventHomeDesc">Un événement temporaire est disponible.</p></div><button id="eventHomeBtn" class="btn secondary">Voir</button></section>
       </main>
     </section>
 
@@ -54,24 +62,181 @@
     <section id="gameScreen" class="screen game-screen">
       <header class="game-header glass"><button id="backToMap" class="icon-btn">←</button><div class="level-title"><strong id="gameLevelLabel">Niveau 1</strong><span id="objectiveLabel">Objectif</span></div><div class="topbar-wallet"><div class="currency">❤️ <span id="gameLives">5/5</span></div><div class="currency">🪙 <span id="gameCoins">0</span></div></div></header>
       <main class="game-shell">
-        <aside class="side-card glass objective-card"><h3>Mission</h3><div id="objectiveProgress" class="objective-progress"></div><div class="moves-box"><span>Coups</span><strong id="movesLeft">0</strong></div></aside>
+        <aside class="side-card glass objective-card"><div class="mission-title"><span>🎯</span><div><small>OBJECTIF DU NIVEAU</small><h3>Mission</h3></div></div><div id="objectiveProgress" class="objective-progress"></div><div class="moves-box"><span>COUPS RESTANTS</span><strong id="movesLeft">0</strong></div></aside>
         <section class="board-column">
           <div id="bossMeter" class="boss-meter glass hidden"><div class="boss-face">👑</div><div class="boss-info"><div><b>GARDIEN DU MONDE</b><span>PV <strong id="bossHp">0</strong></span></div><div class="boss-track"><i id="bossFill"></i></div></div></div>
-          <div class="score-row glass"><div><span>SCORE</span><strong id="scoreValue">0</strong></div><div class="stars-preview"><span id="star1">☆</span><span id="star2">☆</span><span id="star3">☆</span></div></div>
+          <div id="levelTimerBox" class="level-timer glass hidden"><span>⏱️ TEMPS</span><strong id="levelTimerValue">0:00</strong></div><div class="score-row glass"><div><span>SCORE</span><strong id="scoreValue">0</strong></div><div class="stars-preview"><span id="star1">☆</span><span id="star2">☆</span><span id="star3">☆</span></div></div>
           <div class="progress-track"><div id="scoreProgress" class="progress-fill"></div></div><div id="comboText" class="combo-text"></div><div id="fxLayer" class="fx-layer"></div>
           <div id="board" class="board" aria-label="Grille de jeu"></div>
+          <div id="tutorialCoach" class="tutorial-coach hidden">
+            <div class="coach-avatar">🎓</div>
+            <div class="coach-copy"><small>NIVEAU TUTORIEL</small><h3 id="coachTitle">Bienvenue !</h3><p id="coachText">Apprenons à jouer.</p></div>
+            <button id="coachNextBtn" class="btn primary">Suivant</button>
+          </div>
           <div class="boosters glass">
             <button id="shuffleBtn" class="booster-btn"><b>🔀</b><span>Mélanger</span><em>×<i id="inv-shuffle">0</i> · 🪙75</em></button>
             <button id="hammerBtn" class="booster-btn"><b>🔨</b><span>Marteau</span><em>×<i id="inv-hammer">0</i> · 🪙100</em></button>
             <button id="hintBtn" class="booster-btn"><b>💡</b><span>Indice</span><em>×<i id="inv-hint">0</i> · 🪙25</em></button>
+            <button id="bombBtn" class="booster-btn special-buy"><b>💣</b><span>Poser bombe</span><em>×<i id="inv-bomb">0</i></em></button>
+            <button id="rocketBtn" class="booster-btn special-buy"><b>🚀</b><span>Poser fusée</span><em>×<i id="inv-rocket">0</i></em></button>
+            <button id="rainbowBtn" class="booster-btn special-buy"><b>🌈</b><span>Poser prisme</span><em>×<i id="inv-rainbow">0</i></em></button>
           </div>
         </section>
-        <aside class="side-card glass tips-card"><h3>Pops spéciaux</h3><div class="special-tip"><i class="mini-special rocket"></i><p><b>4 alignés</b><br>Fusée ligne/colonne</p></div><div class="special-tip"><i class="mini-special rainbow"></i><p><b>5 alignés</b><br>Prisme multicolore</p></div><div class="special-tip"><i class="mini-special bomb"></i><p><b>Carré 2×2</b><br>Bombe de zone</p></div><div class="special-tip combo-tip"><span>💣🚀</span><p><b>Réactions en chaîne</b><br>Tout spécial touché s’active</p></div><div class="special-tip combo-tip"><span>🌈×15</span><p><b>Prisme + boost</b><br>Transforme 15 Pops normaux</p></div><p class="hint">📱 Sur téléphone, glisse directement le Pop dans la direction voulue.</p></aside>
+        <aside class="side-card glass tips-card"><h3>Pops spéciaux</h3><div class="special-tip"><i class="mini-special rocket"></i><p><b>4 alignés</b><br>Fusée ligne/colonne</p></div><div class="special-tip"><i class="mini-special rainbow"></i><p><b>5 alignés</b><br>Prisme multicolore</p></div><div class="special-tip"><i class="mini-special bomb"></i><p><b>Carré 2×2</b><br>Bombe de zone</p></div><div class="special-tip combo-tip"><span>💣🚀</span><p><b>Réactions en chaîne</b><br>Tout spécial touché s’active</p></div><p class="hint">📱 Sur téléphone, glisse directement le Pop dans la direction voulue.</p></aside>
       </main>
     </section>
 
-    <div id="profilePanel" class="panel-backdrop hidden"><aside class="profile-panel glass"><button id="closeProfile" class="icon-btn close">×</button><div id="profileAvatar" class="avatar large">P</div><h2 id="profileName">Invité</h2><p id="profileType">Progression locale</p><div class="profile-stats"><div><b id="profileCoins">0</b><small>Pièces</small></div><div><b id="profileStars">0</b><small>Étoiles</small></div><div><b id="profileBest">1</b><small>Niveau</small></div></div><button id="adminBtn" class="btn admin full hidden">⚙️ Administration</button><button id="logoutBtn" class="btn ghost full">Se déconnecter</button><button id="resetBtn" class="text-btn danger">Réinitialiser cette progression</button></aside></div>
-    <div id="adminPanel" class="panel-backdrop hidden"><aside class="profile-panel admin-panel glass"><button id="closeAdmin" class="icon-btn close">×</button><div class="admin-crown">👑</div><h2>Administration</h2><p>Outils de test Poporia</p><label class="admin-field">Pièces du compte<input id="adminCoinsValue" type="number" min="0" step="100"></label><label class="admin-field">Niveau débloqué<input id="adminLevelValue" type="number" min="1" max="20"></label><button id="adminApplyBtn" class="btn primary full">Enregistrer</button><div class="admin-grid"><button id="adminBonusBtn" class="btn secondary">+5 000 🪙</button><button id="adminUnlockBtn" class="btn secondary">Tout débloquer</button></div><small class="admin-help">Le rôle admin vient du champ <b>role: "admin"</b> du document Firebase de ce compte.</small>
+    
+<div id="friendsPanel" class="panel-backdrop hidden"><aside class="v5-panel glass"><button id="closeFriends" class="icon-btn close">×</button><div class="v5-head"><span>🤝</span><div><span class="eyebrow">PROFIL SOCIAL</span><h2>Mes amis</h2><p>Ton code : <b id="myFriendCode">------</b></p></div></div><div class="friend-add"><input id="friendCodeInput" maxlength="12" placeholder="CODE AMI"><button id="addFriendBtn" class="btn primary">Ajouter</button></div><div id="friendsList" class="friends-list"></div></aside></div>
+<div id="achievementsPanel" class="panel-backdrop hidden"><aside class="v5-panel glass"><button id="closeAchievements" class="icon-btn close">×</button><div class="v5-head"><span>🏅</span><div><span class="eyebrow">OBJECTIFS LONG TERME</span><h2>Succès</h2></div></div><div id="achievementsList" class="achievements-list"></div></aside></div>
+<div id="notificationsPanel" class="panel-backdrop hidden"><aside class="v5-panel glass"><button id="closeNotifications" class="icon-btn close">×</button><div class="v5-head"><span>🔔</span><div><span class="eyebrow">CENTRE POPORIA</span><h2>Notifications</h2></div></div><div id="notificationsList" class="notifications-list"></div></aside></div>
+<div id="skinsPanel" class="panel-backdrop hidden"><aside class="v5-panel glass"><button id="closeSkins" class="icon-btn close">×</button><div class="v5-head"><span>🎨</span><div><span class="eyebrow">PERSONNALISATION</span><h2>Skins de Pops</h2><p>Achat avec les pièces du jeu.</p></div></div><div id="skinsList" class="skins-list"></div></aside></div>
+<div id="chestRoomPanel" class="panel-backdrop hidden"><aside class="v5-panel glass"><button id="closeChestRoom" class="icon-btn close">×</button><div class="v5-head"><span>🎁</span><div><span class="eyebrow">SALLE DES COFFRES</span><h2>Mes coffres</h2></div></div><div class="chest-room"><article><span>📦</span><h3>Commun</h3><b id="chest-common">0</b><button class="btn secondary" data-open-chest="common">Ouvrir</button></article><article><span>🎁</span><h3>Rare</h3><b id="chest-rare">0</b><button class="btn primary" data-open-chest="rare">Ouvrir</button></article><article><span>💎</span><h3>Épique</h3><b id="chest-epic">0</b><button class="btn premium-pass" data-open-chest="epic">Ouvrir</button></article></div></aside></div>
+<div id="seasonRankPanel" class="panel-backdrop hidden"><aside class="v5-panel glass"><button id="closeSeasonRank" class="icon-btn close">×</button><div class="v5-head"><span>🥇</span><div><span class="eyebrow">SAISON 1</span><h2>Classement saisonnier</h2><p>Classement selon l’XP du Pass. Les admins sont exclus.</p></div></div><div id="seasonRankList" class="season-rank-list"></div></aside></div>
+<div id="tutorialPanel" class="panel-backdrop hidden">
+  <aside class="tutorial-panel glass">
+    <button id="closeTutorial" class="icon-btn close">×</button>
+    <div class="tutorial-head"><div class="tutorial-logo">P</div><div><span class="eyebrow">GUIDE DE JEU</span><h2>Comment jouer à Poporia ?</h2><p>Tout ce qu’il faut savoir avant de devenir un Maître Pop.</p></div></div>
+    <nav class="tutorial-tabs">
+      <button class="tutorial-tab active" data-tutorial="basics">🎮 Les bases</button>
+      <button class="tutorial-tab" data-tutorial="specials">✨ Pops spéciaux</button>
+      <button class="tutorial-tab" data-tutorial="combos">💥 Combinaisons</button>
+      <button class="tutorial-tab" data-tutorial="objectives">🎯 Objectifs</button>
+    </nav>
+    <div class="tutorial-pages">
+      <section class="tutorial-page active" data-page="basics">
+        <div class="tutorial-hero-card"><span>👆</span><div><h3>Aligne au moins 3 Pops</h3><p>Échange deux Pops voisins pour créer une ligne ou une colonne de 3 Pops identiques. Sur téléphone, glisse simplement ton doigt dans la direction souhaitée.</p></div></div>
+        <div class="tutorial-demo"><div class="demo-pop red">●</div><div class="demo-pop red">●</div><div class="demo-pop red">●</div><b>→</b><span class="demo-boom">✨ + score</span></div>
+        <div class="tutorial-grid"><article><span>🎯</span><h4>Remplis la mission</h4><p>Chaque niveau a son propre objectif.</p></article><article><span>👣</span><h4>Surveille tes coups</h4><p>Si le compteur arrive à zéro avant l’objectif, le niveau est perdu.</p></article><article><span>⭐</span><h4>Gagne 3 étoiles</h4><p>Plus ton score est élevé, plus tu obtiens d’étoiles.</p></article><article><span>❤️</span><h4>Gère tes vies</h4><p>Une vie est perdue après un échec et revient automatiquement.</p></article></div>
+      </section>
+      <section class="tutorial-page" data-page="specials">
+        <div class="special-guide">
+          <article><div class="guide-special rocket-guide">🚀</div><div><span class="recipe">4 POPS ALIGNÉS</span><h3>Fusée</h3><p>Supprime une ligne ou une colonne complète. Déplace-la ou touche-la avec une explosion pour l’activer.</p></div></article>
+          <article><div class="guide-special bomb-guide">💣</div><div><span class="recipe">CARRÉ 2 × 2</span><h3>Bombe</h3><p>Explose une grande zone autour d’elle. Elle déclenche également tous les Pops spéciaux pris dans son explosion.</p></div></article>
+          <article><div class="guide-special prism-guide">🌈</div><div><span class="recipe">5 POPS ALIGNÉS</span><h3>Prisme multicolore</h3><p>Échange-le avec un Pop pour supprimer cette couleur. S’il est touché par un boost, il vise la couleur la plus présente.</p></div></article>
+        </div>
+      </section>
+      <section class="tutorial-page" data-page="combos">
+        <div class="combo-guide">
+          <article><b>🚀 + 🚀</b><span>Double fusée</span><p>Nettoie une ligne et une colonne.</p></article>
+          <article><b>💣 + 🚀</b><span>Bombe + Fusée</span><p>Déclenche plusieurs lignes et colonnes à la fois.</p></article>
+          <article><b>💣 + 💣</b><span>Méga Bombe</span><p>Produit une explosion gigantesque.</p></article>
+          <article><b>🌈 + 🚀</b><span>15 Fusées</span><p>Transforme jusqu’à 15 Pops normaux en fusées puis les active.</p></article>
+          <article><b>🌈 + 💣</b><span>15 Bombes</span><p>Transforme jusqu’à 15 Pops normaux en bombes puis les active.</p></article>
+          <article><b>🌈 + 🌈</b><span>Prisme total</span><p>Déclenche un nettoyage massif de la grille.</p></article>
+        </div>
+      </section>
+      <section class="tutorial-page" data-page="objectives">
+        <div class="objective-guide">
+          <article><span>🏆</span><div><h3>Atteindre un score</h3><p>Accumule suffisamment de points avant la fin des coups.</p></div></article>
+          <article><span>🔴</span><div><h3>Collecter des Pops</h3><p>Élimine le nombre demandé de Pops de la couleur indiquée.</p></div></article>
+          <article><span>❄️</span><div><h3>Casser la glace</h3><p>Crée des matchs sur les cases gelées. Certaines glaces possèdent plusieurs couches.</p></div></article>
+          <article><span>📦</span><div><h3>Détruire les caisses</h3><p>Fais des matchs et des explosions à proximité pour les casser.</p></div></article>
+          <article><span>👑</span><div><h3>Boss</h3><p>Les niveaux 10, 20 et 30 possèdent un gardien et donnent de meilleures récompenses.</p></div></article>
+        </div>
+      </section>
+    </div>
+  </aside>
+</div>
+
+
+<div id="creditsPanel" class="panel-backdrop hidden">
+  <aside class="credits-panel glass nexora-credits">
+    <button id="closeCredits" class="icon-btn close">×</button>
+
+    <div class="credits-logo">P</div>
+    <span class="eyebrow">POPORIA · SAISON 1</span>
+    <h2>Crédits & remerciements</h2>
+    <p class="credits-intro">
+      Merci d’avoir joué à Poporia ! 💜<br>
+      Merci à toutes les personnes qui testent le jeu, proposent des idées et participent à son évolution.
+    </p>
+
+    <section class="nexora-credit-card">
+      <span class="eyebrow">UN JEU PRODUIT & ÉDITÉ PAR</span>
+      <img src="assets/nexora-interactive.png" alt="Nexora Interactive" class="nexora-logo-img">
+      <p>
+        <b>Nexora Interactive</b> est la société mère qui produit et édite Poporia,
+        et accompagne le développement de nouveaux jeux et expériences interactives.
+      </p>
+    </section>
+
+    <div class="credits-list">
+      <article>
+        <span>🎮</span>
+        <div>
+          <small>CRÉATION & DIRECTION DU PROJET</small>
+          <h3>Rafaël</h3>
+          <p>Concept du jeu, univers, fonctionnalités, progression et direction de Poporia.</p>
+        </div>
+      </article>
+
+      <article>
+        <span>💻</span>
+        <div>
+          <small>DÉVELOPPEMENT</small>
+          <h3>Rafaël & ChatGPT</h3>
+          <p>Développement du moteur Match-3, interfaces, progression, Firebase et systèmes de jeu.</p>
+        </div>
+      </article>
+
+      <article>
+        <span>🧪</span>
+        <div>
+          <small>TESTEURS & COMMUNAUTÉ</small>
+          <h3>Les joueurs de Poporia</h3>
+          <p>Merci pour les tests, les retours, les bugs signalés et toutes les idées proposées.</p>
+        </div>
+      </article>
+
+      <article>
+        <span>☁️</span>
+        <div>
+          <small>TECHNOLOGIES</small>
+          <h3>HTML · CSS · JavaScript · Firebase</h3>
+          <p>Les technologies principales utilisées pour faire vivre et sauvegarder Poporia.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="credits-thanks">
+      <b>✨ Merci de jouer à Poporia ✨</b>
+      <span>Une production Nexora Interactive</span>
+      <span>Match. Pop. Explore.</span>
+    </div>
+
+    <small class="credits-version">Poporia V6 · Nexora Interactive</small>
+  </aside>
+</div>
+
+<div id="seasonPanel" class="panel-backdrop hidden"><aside class="season-panel glass"><button id="closeSeason" class="icon-btn close">×</button><div class="season-hero"><div><span class="eyebrow">SAISON 1 · ÉCLATS DE POPORIA</span><h2>🎟️ Pass de Saison</h2><p>Gagne de l’XP en terminant des niveaux. Les Boss rapportent davantage.</p></div><div class="season-summary"><span>Niveau <b id="seasonLevel">0</b>/20</span><span><b id="seasonXp">0</b> XP</span><span id="seasonPremiumState">Gratuit</span></div></div><button id="activatePremiumBtn" class="btn premium-pass">✨ Activer Premium · 4,99 €</button><div class="season-labels"><span>PALIER</span><span>XP</span><span>GRATUIT</span><span>PREMIUM</span></div><div id="seasonTiers" class="season-tiers"></div></aside></div>
+<div id="missionsPanel" class="panel-backdrop hidden"><aside class="v4-panel glass"><button id="closeMissions" class="icon-btn close">×</button><div class="v4-head"><span>✅</span><div><p class="eyebrow">CHAQUE JOUR</p><h2>Missions quotidiennes</h2><p>Termine les objectifs avant minuit pour récupérer des pièces.</p></div></div><div id="missionsList" class="missions-list"></div></aside></div>
+
+<div id="eventsPanel" class="panel-backdrop hidden"><aside class="v4-panel glass"><button id="closeEvents" class="icon-btn close">×</button><div class="v4-head"><span>🎉</span><div><p class="eyebrow">POPORIA LIVE</p><h2>Événements temporaires</h2><p>Les événements actifs donnent des bonus supplémentaires pendant tes victoires.</p></div></div><div id="eventsList" class="events-list"></div></aside></div>
+
+<div id="clanPanel" class="panel-backdrop hidden"><aside class="v4-panel clan-panel glass"><button id="closeClan" class="icon-btn close">×</button><div class="v4-head"><span>🛡️</span><div><p class="eyebrow">POPORIA CLANS</p><h2>Mon clan</h2><p>Joue avec d’autres joueurs et fais monter le score de ton équipe.</p></div></div>
+<div id="clanContent">
+<section id="noClanBox"><div class="clan-choice"><article><h3>Créer un clan</h3><input id="clanCreateName" maxlength="24" placeholder="Nom du clan"><textarea id="clanCreateDesc" maxlength="100" placeholder="Description"></textarea><button id="createClanBtn" class="btn primary">Créer mon clan</button></article><article><h3>Rejoindre un clan</h3><input id="clanJoinCode" maxlength="12" placeholder="CODE DU CLAN"><button id="joinClanBtn" class="btn secondary">Rejoindre</button></article></div></section>
+<section id="inClanBox" class="hidden"><div class="clan-banner"><div><span class="eyebrow">CLAN</span><h2 id="clanName">Clan</h2><p id="clanDescription"></p></div><div class="clan-meta"><span>Code <b id="clanCode">------</b></span><span>Rôle <b id="clanRole">Membre</b></span><span>Score <b id="clanScore">0</b></span></div></div><h3>Membres</h3><div id="clanMembers" class="clan-members"></div><button id="leaveClanBtn" class="btn ghost full">Quitter le clan</button></section>
+</div></aside></div>
+<div id="profilePanel" class="panel-backdrop hidden"><aside class="profile-panel player-profile-panel glass">
+      <button id="closeProfile" class="icon-btn close">×</button>
+      <div class="profile-cover">
+        <div class="profile-photo-wrap"><div id="profileAvatar" class="avatar large profile-photo">P</div><label class="photo-edit">📷<input id="profilePhotoInput" type="file" accept="image/*" hidden></label></div>
+        <div><h2 id="profileName">Invité</h2><p id="profileType">Progression locale</p><span id="profileClan" class="profile-clan">🛡️ Sans clan</span></div>
+      </div>
+      <div class="profile-edit-grid">
+        <label>Pseudo<input id="profilePseudoInput" maxlength="16" placeholder="Ton pseudo"></label>
+        <label>Bio<input id="profileBioInput" maxlength="80" placeholder="Une petite phrase..."></label>
+      </div>
+      <button id="saveProfileBtn" class="btn primary full">Enregistrer le profil</button>
+      <div class="profile-stats"><div><b id="profileCoins">0</b><small>Pièces</small></div><div><b id="profileStars">0</b><small>Étoiles</small></div><div><b id="profileBest">1</b><small>Niveau</small></div></div>
+      <div class="profile-stats profile-stats-more"><div><b id="profileTotalScore">0</b><small>Score total</small></div><div><b id="profileWins">0</b><small>Victoires</small></div><div><b id="profileInfinite">0</b><small>Record infini</small></div></div><div class="profile-social-card"><span>🤝 Code ami : <b id="profileFriendCode">------</b></span><span>Amis : <b id="profileFriends">0</b></span><span>Skin : <b id="profileSkin">Classique</b></span></div>
+      <button id="adminBtn" class="btn admin full hidden">⚙️ Administration</button>
+      <button id="logoutBtn" class="btn ghost full">Se déconnecter</button>
+      <button id="resetBtn" class="text-btn danger">Réinitialiser cette progression</button>
+    </aside></div>
+    <div id="adminPanel" class="panel-backdrop hidden"><aside class="profile-panel admin-panel glass"><button id="closeAdmin" class="icon-btn close">×</button><div class="admin-crown">👑</div><h2>Administration</h2><p>Outils de test Poporia</p><section class="admin-global-section"><span class="eyebrow">STATISTIQUES GLOBALES</span><div id="adminGlobalStats" class="admin-global-stats"><div class="admin-loading">Chargement...</div></div></section><label class="admin-field">Pièces du compte<input id="adminCoinsValue" type="number" min="0" step="100"></label><label class="admin-field">Niveau débloqué<input id="adminLevelValue" type="number" min="1" max="80"></label><button id="adminApplyBtn" class="btn primary full">Enregistrer</button><div class="admin-grid"><button id="adminBonusBtn" class="btn secondary">+5 000 🪙</button><button id="adminUnlockBtn" class="btn secondary">Tout débloquer</button></div><small class="admin-help">Le rôle admin vient du champ <b>role: "admin"</b> du document Firebase de ce compte.</small>
 <hr class="admin-sep">
 <div class="admin-users-head"><div><span class="eyebrow">JOUEURS FIREBASE</span><h3>Gestion des comptes</h3></div><button id="adminRefreshPlayers" class="icon-btn">↻</button></div>
 <div id="adminPlayers" class="admin-players"></div>
@@ -80,12 +245,18 @@
 <h3 id="adminPlayerName">Joueur</h3>
 <div class="admin-editor-grid">
 <label class="admin-field">Pièces<input id="adminPlayerCoins" type="number" min="0"></label>
-<label class="admin-field">Niveau<input id="adminPlayerLevel" type="number" min="1" max="30"></label>
+<label class="admin-field">Niveau<input id="adminPlayerLevel" type="number" min="1" max="80"></label>
 <label class="admin-field">Vies<input id="adminPlayerLives" type="number" min="0" max="5"></label>
 <label class="admin-field">Rôle<select id="adminPlayerRole"><option value="player">Joueur</option><option value="admin">Admin</option></select></label>
 </div>
 <button id="adminSavePlayer" class="btn primary full">Enregistrer ce joueur</button>
 </div>
+<hr class="admin-sep">
+<section class="admin-v4-section"><span class="eyebrow">CODES PROMOS</span><h3>Créer un code promo</h3><div class="admin-form-grid"><input id="adminPromoCode" maxlength="24" placeholder="CODE"><input id="adminPromoCoins" type="number" min="0" placeholder="Pièces"><input id="adminPromoHammer" type="number" min="0" placeholder="Marteaux"><input id="adminPromoRocket" type="number" min="0" placeholder="Fusées"></div><button id="adminCreatePromoBtn" class="btn secondary full">Créer / mettre à jour</button></section>
+<hr class="admin-sep">
+<section class="admin-v4-section"><span class="eyebrow">ÉVÉNEMENTS</span><h3>Créer un événement temporaire</h3><div class="admin-form-grid"><input id="adminEventName" maxlength="30" placeholder="Nom"><input id="adminEventIcon" maxlength="4" placeholder="🎉"><input id="adminEventReward" type="number" min="0" placeholder="Bonus / victoire"><input id="adminEventId" maxlength="24" placeholder="ID (ex: summer26)"></div><textarea id="adminEventDesc" maxlength="140" placeholder="Description de l'événement"></textarea><div class="admin-form-grid"><label class="admin-date">Début<input id="adminEventStart" type="datetime-local"></label><label class="admin-date">Fin<input id="adminEventEnd" type="datetime-local"></label></div><button id="adminCreateEventBtn" class="btn secondary full">Publier l’événement</button><div id="adminEventsList" class="admin-events-list"></div></section>
+<hr class="admin-sep">
+<section class="admin-v4-section"><span class="eyebrow">RÉCOMPENSE JOUEUR</span><h3>Donner des boosters</h3><div class="admin-form-grid"><input id="adminGrantHammer" type="number" min="0" placeholder="Marteaux"><input id="adminGrantBomb" type="number" min="0" placeholder="Bombes"><input id="adminGrantRocket" type="number" min="0" placeholder="Fusées"><input id="adminGrantRainbow" type="number" min="0" placeholder="Prismes"></div><button id="adminGrantBoostersBtn" class="btn secondary full">Donner au joueur sélectionné</button></section>
 </aside></div><div id="leaderboardPanel" class="panel-backdrop hidden">
   <aside class="leaderboard-panel glass">
     <button id="closeLeaderboard" class="icon-btn close">×</button>
@@ -105,20 +276,40 @@
       <article class="shop-item"><div class="shop-icon">🔨</div><h3>Pack Marteaux</h3><p>3 marteaux pour casser une case.</p><b>Stock : <span id="shop-hammer">0</span></b><button class="btn primary" data-buy="hammer">250 🪙</button></article>
       <article class="shop-item"><div class="shop-icon">🔀</div><h3>Pack Mélange</h3><p>3 mélanges pour sauver une grille.</p><b>Stock : <span id="shop-shuffle">0</span></b><button class="btn primary" data-buy="shuffle">180 🪙</button></article>
       <article class="shop-item"><div class="shop-icon">💡</div><h3>Pack Indices</h3><p>5 indices quand tu bloques.</p><b>Stock : <span id="shop-hint">0</span></b><button class="btn primary" data-buy="hint">120 🪙</button></article>
+      <article class="shop-item special-shop"><div class="shop-icon">💣</div><h3>Pack Bombes</h3><p>2 bombes à poser directement sur la grille.</p><b>Stock : <span id="shop-bomb">0</span></b><button class="btn primary" data-buy="bomb">450 🪙</button></article>
+      <article class="shop-item special-shop"><div class="shop-icon">🚀</div><h3>Pack Fusées</h3><p>2 fusées horizontales ou verticales aléatoires.</p><b>Stock : <span id="shop-rocket">0</span></b><button class="btn primary" data-buy="rocket">400 🪙</button></article>
+      <article class="shop-item special-shop"><div class="shop-icon">🌈</div><h3>Prisme</h3><p>1 prisme multicolore à placer dans une partie.</p><b>Stock : <span id="shop-rainbow">0</span></b><button class="btn primary" data-buy="rainbow">700 🪙</button></article>
     </div>
+    <section class="rotating-card"><div><span class="eyebrow">BOUTIQUE TOURNANTE</span><h3>🕒 Offres du jour</h3><p>Les offres changent chaque jour.</p></div><div id="rotatingShop" class="rotating-shop"></div></section><section class="promo-card">
+      <div><span class="eyebrow">CODE PROMO</span><h3>🎟️ Entre ton code</h3><p>Exemple : <b>V1</b> offre 3 marteaux.</p></div>
+      <div class="promo-form"><input id="promoInput" maxlength="24" placeholder="TON CODE"><button id="promoRedeemBtn" class="btn secondary">Valider</button></div><small id="promoMessage"></small>
+    </section>
+    <section class="realmoney-card stripe-card">
+  <div>
+    <span class="eyebrow">BOUTIQUE STRIPE</span>
+    <h3>💳 Acheter des pièces</h3>
+    <p>Paiement sécurisé via Stripe Checkout. Les récompenses sont ajoutées uniquement après confirmation du paiement.</p>
+  </div>
+  <div class="coin-packs">
+    <button class="coin-pack stripe-pack" data-stripe-product="coins_1000"><b>1 000 🪙</b><span>0,99 €</span></button>
+    <button class="coin-pack stripe-pack" data-stripe-product="coins_5500"><b>5 500 🪙</b><span>4,99 €</span></button>
+    <button class="coin-pack stripe-pack" data-stripe-product="coins_12000"><b>12 000 🪙</b><span>9,99 €</span></button>
+  </div>
+  <small class="stripe-secure">🔒 Paiement traité par Stripe · aucune donnée bancaire n’est stockée dans Poporia.</small>
+</section>
     <section class="chest-card"><div><span class="eyebrow">COFFRES</span><h3>🎁 Coffres disponibles : <span id="chestCount">0</span></h3><p>Un coffre tous les 5 niveaux gagnés.</p></div><button id="openChestBtn" class="btn secondary">Ouvrir</button></section>
   </aside>
 </div>
-<div id="preLevelModal" class="modal hidden">
+<div id="featureTutorial" class="feature-tutorial hidden"><div class="feature-tutorial-card glass"><div id="featureTutorialIcon" class="feature-tutorial-icon">❄️</div><div><span class="eyebrow">NOUVELLE MÉCANIQUE</span><h2 id="featureTutorialTitle">Nouveau !</h2><p id="featureTutorialText"></p></div><button id="featureTutorialNext" class="btn primary">J’ai compris</button></div></div><div id="preLevelModal" class="modal hidden">
   <div class="modal-card prelevel-card glass">
     <span class="eyebrow">PRÊT À JOUER ?</span><h2 id="preLevelNumber">Niveau 1</h2>
     <p id="preObjective">Objectif</p>
-    <div class="prelevel-stats"><div><span>🎯</span><b id="preMoves">20</b><small>Coups</small></div><div><span>❤️</span><b id="preLives">5/5</b><small>Vies</small></div><div><span>🎒</span><b id="preInventory">—</b><small>Boosts</small></div></div>
+    <div class="prelevel-stats prelevel-stats-v42"><div><span>🎯</span><b id="preMoves">20</b><small>Coups</small></div><div><span>⏱️</span><b id="preTime">—</b><small>Temps</small></div><div><span>❤️</span><b id="preLives">5/5</b><small>Vies</small></div><div><span>🎒</span><b id="preInventory">—</b><small>Boosts</small></div></div>
     <p class="prelevel-note">Une vie est perdue uniquement si le niveau est échoué.</p>
     <div class="modal-actions"><button id="preCancelBtn" class="btn ghost">Retour</button><button id="prePlayBtn" class="btn primary">Jouer ▶</button></div>
   </div>
 </div>
-<div id="modal" class="modal hidden"><div class="modal-card glass"><div id="modalIcon" class="modal-icon">🎉</div><h2 id="modalTitle">Niveau terminé !</h2><p id="modalText"></p><div id="modalStars" class="modal-stars">⭐⭐⭐</div><div class="modal-actions"><button id="modalMapBtn" class="btn ghost">Carte</button><button id="modalMainBtn" class="btn primary">Continuer</button></div></div></div>
+<div id="modal" class="modal hidden"><div class="modal-card glass"><div id="modalIcon" class="modal-icon">🎉</div><h2 id="modalTitle">Niveau terminé !</h2><p id="modalText"></p><div id="modalStars" class="modal-stars">⭐⭐⭐</div><div class="modal-actions modal-actions-v22"><button id="modalMapBtn" class="btn ghost">Carte</button><button id="modalRetryBtn" class="btn ghost hidden">Réessayer ❤️</button><button id="modalContinueBtn" class="btn continue-five hidden">+5 coups · 500 🪙</button><button id="modalMainBtn" class="btn primary">Continuer</button></div></div></div>
     <div id="toast" class="toast"></div>
   </div>
   <script type="module" src="app.js"></script>
