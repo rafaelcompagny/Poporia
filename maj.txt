@@ -1,0 +1,4 @@
+git add .
+git commit -m "Poporia V7.1 - Nom de la mise à jour"
+git pull origin main --rebase
+git push origin main
