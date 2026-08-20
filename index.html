@@ -30,21 +30,62 @@
 
     <section id="homeScreen" class="screen home-screen">
       <header class="mobile-topbar glass">
-        <div class="player-pill"><div id="homeAvatar" class="avatar">P</div><div><b id="homePlayer">Invité</b><small id="homeRank">Explorateur</small></div></div>
-        <div class="currency life-pill">❤️ <span id="homeLives">5/5</span></div><div class="currency">🪙 <span id="homeCoins">0</span></div><button id="leaderboardBtn" class="icon-btn" title="Classements">🏆</button><button id="shopBtn" class="icon-btn" title="Boutique">🛍️</button><button id="notificationsBtn" class="icon-btn notif-btn" title="Notifications">🔔<i id="notifBadge" class="notif-badge hidden">0</i></button><button id="accountBtn" class="icon-btn">👤</button>
+        <button id="homeProfileQuick" class="player-pill player-pill-button" type="button">
+          <div id="homeAvatar" class="avatar">P</div>
+          <div><b id="homePlayer">Invité</b><small id="homeRank">Explorateur</small></div>
+        </button>
+        <div class="home-wallet">
+          <div class="currency life-pill">❤️ <span id="homeLives">5/5</span></div>
+          <div class="currency">🪙 <span id="homeCoins">0</span></div>
+        </div>
+        <div class="home-header-actions">
+          <button id="notificationsBtn" class="icon-btn notif-btn" title="Notifications">🔔<i id="notifBadge" class="notif-badge hidden">0</i></button>
+          <button id="accountBtn" class="icon-btn desktop-only-action" title="Profil">👤</button>
+        </div>
       </header>
       <main class="home-main">
-        <section class="hero glass">
-          <div class="hero-copy"><span class="eyebrow">SAISON 1 · POPORIA CITY</span><h1>POPORIA</h1><p>Associe les Pops, crée des pouvoirs et traverse des mondes de plus en plus difficiles.</p><div class="hero-actions"><button id="playBtn" class="btn primary big">Continuer <span>▶</span></button><button id="tutorialLevelBtn" class="btn secondary">🎓 Niveau Tutoriel</button><button id="tutorialBtn" class="btn secondary">📖 Guide</button><button id="creditsBtn" class="btn ghost">✨ Crédits</button></div></div>
-          <div class="hero-visual pop-showcase"><div class="show-pop sp-red">●</div><div class="show-pop sp-blue">★</div><div class="show-pop sp-green">◆</div><div class="show-pop sp-yellow">✦</div><div class="show-pop sp-purple">⬡</div><div class="show-pop sp-pink">♥</div></div>
+        <section class="hero glass home-play-card">
+          <div class="hero-copy">
+            <span class="eyebrow">SAISON 1 · L'AVENTURE CONTINUE</span>
+            <h1>POPORIA</h1>
+            <p>Associe les Pops, déclenche des combos et avance dans les mondes.</p>
+            <div class="home-progress-strip">
+              <span>⭐ <b id="homeStars">0</b><small>Étoiles</small></span>
+              <span>🏆 <b id="homeLevel">1</b><small>Niveau</small></span>
+              <span>☁️ <b id="syncState">Local</b><small>Sauvegarde</small></span>
+            </div>
+            <div class="hero-actions">
+              <button id="playBtn" class="btn primary big home-play-btn">JOUER <span>▶</span></button>
+              <button id="tutorialLevelBtn" class="btn compact secondary">🎓 Tutoriel</button>
+              <button id="tutorialBtn" class="btn compact secondary">📖 Guide</button>
+              <button id="creditsBtn" class="btn compact ghost">✨ Crédits</button>
+            </div>
+          </div>
+          <div class="hero-visual pop-showcase v68-flying-pops" aria-hidden="true">
+            <div class="show-pop sp-red">●</div>
+            <div class="show-pop sp-blue">★</div>
+            <div class="show-pop sp-purple">⬡</div>
+            <div class="show-pop sp-yellow">✦</div>
+            <div class="show-pop sp-green">◆</div>
+            <div class="show-pop sp-pink">♥</div>
+          </div>
         </section>
-        <section class="quick-grid">
-<article class="mini-card glass"><span>⭐</span><div><b id="homeStars">0</b><small>Étoiles</small></div></article>
-<article class="mini-card glass"><span>🏆</span><div><b id="homeLevel">1</b><small>Niveau max</small></div></article>
-<article class="mini-card glass"><span>☁️</span><div><b id="syncState">Local</b><small>Sauvegarde</small></div></article>
-<button id="missionsBtn" class="mini-card action-mini glass"><span>✅</span><div><b>Missions</b><small>Quotidiennes</small></div></button>
-<button id="clanBtn" class="mini-card action-mini glass"><span>🛡️</span><div><b>Clan</b><small>Équipe</small></div></button>
-<button id="eventsBtn" class="mini-card action-mini glass"><span>🎉</span><div><b>Événements</b><small>Temporaires</small></div></button><button id="infiniteBtn" class="mini-card action-mini glass"><span>♾️</span><div><b>Mode Infini</b><small>Record personnel</small></div></button><button id="friendsBtn" class="mini-card action-mini glass"><span>🤝</span><div><b>Amis</b><small>Profil social</small></div></button><button id="achievementsBtn" class="mini-card action-mini glass"><span>🏅</span><div><b>Succès</b><small>Récompenses</small></div></button><button id="chestsBtn" class="mini-card action-mini glass"><span>🎁</span><div><b>Coffres</b><small>Ouvrir</small></div></button><button id="skinsBtn" class="mini-card action-mini glass"><span>🎨</span><div><b>Skins Pops</b><small>Personnaliser</small></div></button><button id="seasonRankBtn" class="mini-card action-mini glass"><span>🥇</span><div><b>Classement</b><small>Saisonnier</small></div></button><button id="seasonBtn" class="mini-card action-mini glass"><span>🎟️</span><div><b>Pass Saison</b><small>Saison 1</small></div></button>
+        <section class="home-feature-strip" aria-label="Raccourcis Poporia">
+<button id="missionsBtn" class="feature-chip glass"><span>✅</span><div><b>Missions</b><small>Quotidiennes</small></div></button>
+<button id="eventsBtn" class="feature-chip glass"><span>🎉</span><div><b>Événements</b><small>En cours</small></div></button>
+<button id="seasonBtn" class="feature-chip glass"><span>🎟️</span><div><b>Pass</b><small>Saison 1</small></div></button>
+<button id="chestsBtn" class="feature-chip glass"><span>🎁</span><div><b>Coffres</b><small>Récompenses</small></div></button>
+<button id="infiniteBtn" class="feature-chip glass"><span>♾️</span><div><b>Infini</b><small>Record</small></div></button>
+<button id="mobileMoreBtn" class="feature-chip glass"><span>•••</span><div><b>Plus</b><small>Social & autres</small></div></button>
+</section>
+<section class="desktop-feature-grid">
+  <button id="shopBtn" class="desktop-feature-btn glass"><span>🛍️</span><b>Boutique</b></button>
+  <button id="leaderboardBtn" class="desktop-feature-btn glass"><span>🏆</span><b>Classements</b></button>
+  <button id="clanBtn" class="desktop-feature-btn glass"><span>🛡️</span><b>Clan</b></button>
+  <button id="friendsBtn" class="desktop-feature-btn glass"><span>🤝</span><b>Amis</b></button>
+  <button id="achievementsBtn" class="desktop-feature-btn glass"><span>🏅</span><b>Succès</b></button>
+  <button id="skinsBtn" class="desktop-feature-btn glass"><span>🎨</span><b>Skins</b></button>
+  <button id="seasonRankBtn" class="desktop-feature-btn glass"><span>🥇</span><b>Saison</b></button>
 </section>
         <section class="daily-card glass"><div><span class="eyebrow">DÉFI DE MONDE</span><h3>🏙️ City Rush</h3><p>Nouveau défi dans <b id="worldTimer">--:--:--</b> · Vie suivante <b id="lifeTimer">MAX</b></p></div><button id="dailyRewardBtn" class="btn secondary">🎁 Cadeau</button></section>
 <section class="event-home glass"><div class="event-home-icon">🎉</div><div><span class="eyebrow">EN CE MOMENT</span><h3 id="eventHomeTitle">Festival Poporia</h3><p id="eventHomeDesc">Un événement temporaire est disponible.</p></div><button id="eventHomeBtn" class="btn secondary">Voir</button></section>
@@ -55,25 +96,33 @@
       <header class="topbar glass"><button class="icon-btn" data-go="homeScreen">←</button><div class="world-head"><small id="worldNumber">MONDE 1</small><h2 id="worldName">Poporia City</h2><p id="worldSubtitle">Les premiers éclats</p></div><div class="topbar-wallet"><div class="currency">❤️ <span id="mapLives">5/5</span></div><div class="currency">🪙 <span id="mapCoins">0</span></div></div></header>
       <main class="world-layout">
         <section id="worldSwitcher" class="world-switcher glass"></section>
-        <section class="map-wrap"><div class="map-cloud cloud-a">☁</div><div class="map-cloud cloud-b">☁</div><div class="map-hill hill-a"></div><div class="map-hill hill-b"></div><div class="path-line"></div><div id="levelMap" class="level-map"></div></section>
+        <section id="mapWrap" class="map-wrap"><div class="map-cloud cloud-a">☁</div><div class="map-cloud cloud-b">☁</div><div class="map-hill hill-a"></div><div class="map-hill hill-b"></div><div class="path-line"></div><div id="levelMap" class="level-map"></div></section>
       </main>
     </section>
 
     <section id="gameScreen" class="screen game-screen">
-      <header class="game-header glass"><button id="backToMap" class="icon-btn">←</button><div class="level-title"><strong id="gameLevelLabel">Niveau 1</strong><span id="objectiveLabel">Objectif</span></div><div class="topbar-wallet"><div class="currency">❤️ <span id="gameLives">5/5</span></div><div class="currency">🪙 <span id="gameCoins">0</span></div></div></header>
+      <header class="game-header glass">
+        <button id="backToMap" class="icon-btn game-back">←</button>
+        <div class="level-title"><strong id="gameLevelLabel">Niveau 1</strong><span id="objectiveLabel">Objectif</span></div>
+        <div class="game-header-counters">
+          <div class="currency game-life">❤️ <span id="gameLives">5/5</span></div>
+          <div class="currency game-coins">🪙 <span id="gameCoins">0</span></div>
+        </div>
+      </header>
       <main class="game-shell">
         <aside class="side-card glass objective-card"><div class="mission-title"><span>🎯</span><div><small>OBJECTIF DU NIVEAU</small><h3>Mission</h3></div></div><div id="objectiveProgress" class="objective-progress"></div><div class="moves-box"><span>COUPS RESTANTS</span><strong id="movesLeft">0</strong></div></aside>
         <section class="board-column">
           <div id="bossMeter" class="boss-meter glass hidden"><div class="boss-face">👑</div><div class="boss-info"><div><b>GARDIEN DU MONDE</b><span>PV <strong id="bossHp">0</strong></span></div><div class="boss-track"><i id="bossFill"></i></div></div></div>
           <div id="levelTimerBox" class="level-timer glass hidden"><span>⏱️ TEMPS</span><strong id="levelTimerValue">0:00</strong></div><div class="score-row glass"><div><span>SCORE</span><strong id="scoreValue">0</strong></div><div class="stars-preview"><span id="star1">☆</span><span id="star2">☆</span><span id="star3">☆</span></div></div>
           <div class="progress-track"><div id="scoreProgress" class="progress-fill"></div></div><div id="comboText" class="combo-text"></div><div id="fxLayer" class="fx-layer"></div>
-          <div id="board" class="board" aria-label="Grille de jeu"></div>
+          <div id="board" class="board" aria-label="Grille de jeu"></div><div id="gameMicroToast" class="game-micro-toast hidden"></div>
           <div id="tutorialCoach" class="tutorial-coach hidden">
             <div class="coach-avatar">🎓</div>
             <div class="coach-copy"><small>NIVEAU TUTORIEL</small><h3 id="coachTitle">Bienvenue !</h3><p id="coachText">Apprenons à jouer.</p></div>
             <button id="coachNextBtn" class="btn primary">Suivant</button>
           </div>
-          <div class="boosters glass">
+          <button id="mobileBoostersToggle" class="mobile-boosters-toggle hidden-desktop" type="button">⚡ Boosters <span>6</span></button>
+          <div class="boosters glass" id="boostersPanel">
             <button id="shuffleBtn" class="booster-btn"><b>🔀</b><span>Mélanger</span><em>×<i id="inv-shuffle">0</i> · 🪙75</em></button>
             <button id="hammerBtn" class="booster-btn"><b>🔨</b><span>Marteau</span><em>×<i id="inv-hammer">0</i> · 🪙100</em></button>
             <button id="hintBtn" class="booster-btn"><b>💡</b><span>Indice</span><em>×<i id="inv-hint">0</i> · 🪙25</em></button>
@@ -311,7 +360,32 @@
 </div>
 <div id="modal" class="modal hidden"><div class="modal-card glass"><div id="modalIcon" class="modal-icon">🎉</div><h2 id="modalTitle">Niveau terminé !</h2><p id="modalText"></p><div id="modalStars" class="modal-stars">⭐⭐⭐</div><div class="modal-actions modal-actions-v22"><button id="modalMapBtn" class="btn ghost">Carte</button><button id="modalRetryBtn" class="btn ghost hidden">Réessayer ❤️</button><button id="modalContinueBtn" class="btn continue-five hidden">+5 coups · 500 🪙</button><button id="modalMainBtn" class="btn primary">Continuer</button></div></div></div>
     <div id="toast" class="toast"></div>
-  </div>
+  
+<nav id="mobileBottomNav" class="mobile-bottom-nav" aria-label="Navigation mobile">
+  <button id="mobileNavHome" class="active" type="button"><span>🏠</span><small>Accueil</small></button>
+  <button id="mobileNavMap" type="button"><span>🗺️</span><small>Niveaux</small></button>
+  <button id="mobileNavShop" type="button"><span>🛍️</span><small>Boutique</small></button>
+  <button id="mobileNavSocial" type="button"><span>👥</span><small>Social</small></button>
+  <button id="mobileNavProfile" type="button"><span>👤</span><small>Profil</small></button>
+</nav>
+
+<div id="mobileMorePanel" class="panel-backdrop hidden">
+  <aside class="mobile-hub-panel glass">
+    <button id="closeMobileMore" class="icon-btn close">×</button>
+    <span class="eyebrow">POPORIA</span>
+    <h2>Tout Poporia</h2>
+    <div class="mobile-hub-grid">
+      <button id="mobileHubFriends"><span>🤝</span><b>Amis</b></button>
+      <button id="mobileHubClan"><span>🛡️</span><b>Clan</b></button>
+      <button id="mobileHubRanks"><span>🏆</span><b>Classements</b></button>
+      <button id="mobileHubAchievements"><span>🏅</span><b>Succès</b></button>
+      <button id="mobileHubSkins"><span>🎨</span><b>Skins</b></button>
+      <button id="mobileHubSeasonRank"><span>🥇</span><b>Saison</b></button>
+    </div>
+  </aside>
+</div>
+
+</div>
   <script type="module" src="app.js"></script>
 </body>
 </html>

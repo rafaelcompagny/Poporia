@@ -9,14 +9,14 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const SIZE=8, COLORS=['red','blue','green','yellow','purple','pink'], COST={shuffle:75,hammer:100,hint:25};
 const POP_INFO={red:{name:'Ruby',symbol:'●'},blue:{name:'Nova',symbol:'★'},green:{name:'Leaf',symbol:'◆'},yellow:{name:'Spark',symbol:'✦'},purple:{name:'Hexa',symbol:'⬡'},pink:{name:'Heart',symbol:'♥'}};
 const WORLDS=[
- {id:0,name:'Poporia City',short:'City',icon:'🏙️',subtitle:'Les premiers éclats',start:1,end:10},
- {id:1,name:'Poporia Forest',short:'Forest',icon:'🌲',subtitle:'Sous les feuilles magiques',start:11,end:20},
- {id:2,name:'Crystal Caves',short:'Caves',icon:'💎',subtitle:'Les profondeurs scintillantes',start:21,end:30},
- {id:3,name:'Poporia Beach',short:'Beach',icon:'🏖️',subtitle:'Les marées enchantées',start:31,end:40},
- {id:4,name:'Sky Kingdom',short:'Sky',icon:'☁️',subtitle:'Au-dessus des nuages',start:41,end:50},
- {id:5,name:'Volcano Pop',short:'Volcano',icon:'🌋',subtitle:'Au cœur de la lave',start:51,end:60},
- {id:6,name:'Neon Galaxy',short:'Galaxy',icon:'🌌',subtitle:'Aux frontières de Poporia',start:61,end:70},
- {id:7,name:'Royal Peaks',short:'Royal',icon:'🏰',subtitle:'Le royaume des Maîtres Pops',start:71,end:80}
+ {id:0,name:'Poporia City',short:'City',icon:'🏙️',subtitle:'Les premiers éclats',start:1,end:10,starsRequired:0,theme:'city'},
+ {id:1,name:'Poporia Forest',short:'Forest',icon:'🌲',subtitle:'Sous les feuilles magiques',start:11,end:20,starsRequired:12,theme:'forest'},
+ {id:2,name:'Crystal Caves',short:'Caves',icon:'💎',subtitle:'Les profondeurs scintillantes',start:21,end:30,starsRequired:45,theme:'caves'},
+ {id:3,name:'Poporia Beach',short:'Beach',icon:'🏖️',subtitle:'Les marées enchantées',start:31,end:40,starsRequired:72,theme:'beach'},
+ {id:4,name:'Sky Kingdom',short:'Sky',icon:'☁️',subtitle:'Au-dessus des nuages',start:41,end:50,starsRequired:100,theme:'sky'},
+ {id:5,name:'Volcano Pop',short:'Volcano',icon:'🌋',subtitle:'Au cœur de la lave',start:51,end:60,starsRequired:128,theme:'volcano'},
+ {id:6,name:'Neon Galaxy',short:'Galaxy',icon:'🌌',subtitle:'Aux frontières de Poporia',start:61,end:70,starsRequired:158,theme:'galaxy'},
+ {id:7,name:'Royal Peaks',short:'Royal',icon:'🏰',subtitle:'Le royaume des Maîtres Pops',start:71,end:80,starsRequired:188,theme:'royal'}
 ];
 const levels=[
  {moves:23,goal:{type:'score',target:3200},stars:[3200,5000,6800]},
@@ -107,7 +107,7 @@ const defaultSave=()=>({coins:500,stars:{},bestScores:{},unlocked:1,lastGift:nul
 const localKey=()=>guest?'poporiaGuestSave':`poporiaCache:${user?.uid||'none'}`;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),1900)}
-function showScreen(id){$$('.screen').forEach(s=>s.classList.remove('active'));$('#'+id).classList.add('active');if(id==='mapScreen')renderMap();if(id==='homeScreen')updateProfile()}
+function showScreen(id){$$('.screen').forEach(s=>s.classList.remove('active'));$('#'+id).classList.add('active');if(id==='mapScreen')renderMap();if(id==='homeScreen')updateProfile();mobileSetNav(id)}
 function localLoad(){try{return{...defaultSave(),...(JSON.parse(localStorage.getItem(localKey()))||{})}}catch{return defaultSave()}}
 async function loadCloudSave(){if(guest){save=localLoad();isAdmin=false;return}const ref=doc(db,'users',user.uid),snap=await getDoc(ref);if(snap.exists())save={...defaultSave(),...snap.data()};else{save=defaultSave();await setDoc(ref,{...save,uid:user.uid,email:user.email,pseudo:user.displayName||'Joueur',updatedAt:serverTimestamp()})}normalizeSave();isAdmin=save.role==='admin'||save.isAdmin===true;localStorage.setItem(localKey(),JSON.stringify(save))}
 function persist(){if(!save)return;localStorage.setItem(localKey(),JSON.stringify(save));updateCurrencies();if(!guest&&user){clearTimeout(syncTimer);syncTimer=setTimeout(async()=>{try{await setDoc(doc(db,'users',user.uid),{...save,uid:user.uid,email:user.email,pseudo:user.displayName||'Joueur',updatedAt:serverTimestamp()},{merge:true});await syncLeaderboard();$('#syncState').textContent='Cloud'}catch(e){$('#syncState').textContent='Local';console.warn('Sync Firebase:',e)}},250)}}
@@ -238,7 +238,46 @@ function consumeBooster(k,cost,label){
 }
 
 function updateCurrencies(){if(!save)return;regenLives();['homeCoins','mapCoins','gameCoins'].forEach(id=>$('#'+id)&&($('#'+id).textContent=save.coins));$('#homeStars').textContent=totalStars();$('#homeLevel').textContent=save.unlocked;$('#syncState').textContent=guest?'Local':'Cloud';updateLivesUI();['hammer','shuffle','hint','bomb','rocket','rainbow'].forEach(k=>$('#inv-'+k)&&($('#inv-'+k).textContent=inventoryCount(k)))}
-function updateProfile(){if(!save)return;const name=displayName(),initial=name[0]?.toUpperCase()||'P',stars=totalStars(),p=profileData(),scoreTotal=totalBestScore();$('#homePlayer').textContent=name;applyAvatar($('#homeAvatar'),p.avatar,initial);applyAvatar($('#profileAvatar'),p.avatar,initial);$('#profileName').textContent=name;$('#profileType').textContent=guest?'Progression invitée locale':isAdmin?`${user?.email||'Compte Firebase'} · ADMIN`:user?.email||'Compte Firebase';$('#profileClan').textContent=p.clanId?`🛡️ Clan · ${p.clanRole||'membre'}`:'🛡️ Sans clan';$('#profilePseudoInput').value=name;$('#profileBioInput').value=p.bio||'';$('#profileCoins').textContent=save.coins;$('#profileStars').textContent=stars;$('#profileBest').textContent=save.unlocked;$('#profileTotalScore').textContent=scoreTotal.toLocaleString('fr-FR');$('#profileWins').textContent=save.wins||0;if($('#profileFriendCode'))$('#profileFriendCode').textContent=save.social.friendCode;if($('#profileFriends'))$('#profileFriends').textContent=save.social.friends.length;if($('#profileInfinite'))$('#profileInfinite').textContent=Number(save.infiniteBest||0).toLocaleString('fr-FR');if($('#profileSkin'))$('#profileSkin').textContent=(SKINS.find(s=>s.id===save.skins.active)||SKINS[0]).name;$('#homeRank').textContent=isAdmin?'ADMIN':stars>=40?'Maître Pop':stars>=20?'Expert Pop':'Explorateur';if($('#tutorialLevelBtn'))$('#tutorialLevelBtn').textContent=save.tutorialDone?'🎓 Rejouer le tutoriel':'🎓 Tutoriel obligatoire';if($('#adminBtn'))$('#adminBtn').classList.toggle('hidden',!isAdmin);updateCurrencies()}
+
+function updatePremiumHome(){
+  if(!save)return;
+  const wi=worldForLevel(save.unlocked),w=WORLDS[wi]||WORLDS[0];
+  const start=w.start||1,end=w.end||10,level=Math.min(save.unlocked,end);
+  const pct=Math.max(0,Math.min(100,((level-start)/(Math.max(1,end-start)))*100));
+  if($('#homeWorldName'))$('#homeWorldName').textContent=`${w.icon||'🍬'} ${w.name||'Monde Poporia'}`;
+  if($('#homeWorldSubtitle'))$('#homeWorldSubtitle').textContent=w.subtitle||'Continue ton aventure.';
+  if($('#homeWorldProgress'))$('#homeWorldProgress').style.width=`${pct}%`;
+  if($('#homeWorldProgressText'))$('#homeWorldProgressText').textContent=`Niveau ${level} / ${end}`;
+}
+function updateMobileGameSummary(){
+  if(!$('#mobileGameObjective'))return;
+  if(tutorialMode){
+    $('#mobileGameObjective').textContent='🎓 Tutoriel';
+    $('#mobileGameMoves').textContent='👣 ∞';
+    $('#mobileGameTime').classList.add('hidden');
+    return;
+  }
+  if(infiniteMode){
+    $('#mobileGameObjective').textContent='♾️ Meilleur score';
+    $('#mobileGameMoves').textContent=`👣 ${moves}`;
+    $('#mobileGameTime').classList.add('hidden');
+    return;
+  }
+  const l=levels[currentLevel];
+  $('#mobileGameObjective').textContent=`🎯 ${objectiveText(l)}`;
+  $('#mobileGameMoves').textContent=`👣 ${moves}`;
+  if(l?.time){
+    $('#mobileGameTime').classList.remove('hidden');
+    $('#mobileGameTime').textContent=`⏱️ ${levelTimeLeft??l.time}s`;
+  }else $('#mobileGameTime').classList.add('hidden');
+}
+function showGameMicroToast(text){
+  const el=$('#gameMicroToast');if(!el)return;
+  el.textContent=text;el.classList.remove('hidden','show');
+  requestAnimationFrame(()=>el.classList.add('show'));
+  clearTimeout(el._t);el._t=setTimeout(()=>{el.classList.remove('show');setTimeout(()=>el.classList.add('hidden'),180)},900);
+}
+function updateProfile(){if(!save)return;const name=displayName(),initial=name[0]?.toUpperCase()||'P',stars=totalStars(),p=profileData(),scoreTotal=totalBestScore();$('#homePlayer').textContent=name;applyAvatar($('#homeAvatar'),p.avatar,initial);applyAvatar($('#profileAvatar'),p.avatar,initial);$('#profileName').textContent=name;$('#profileType').textContent=guest?'Progression invitée locale':isAdmin?`${user?.email||'Compte Firebase'} · ADMIN`:user?.email||'Compte Firebase';$('#profileClan').textContent=p.clanId?`🛡️ Clan · ${p.clanRole||'membre'}`:'🛡️ Sans clan';$('#profilePseudoInput').value=name;$('#profileBioInput').value=p.bio||'';$('#profileCoins').textContent=save.coins;$('#profileStars').textContent=stars;$('#profileBest').textContent=save.unlocked;$('#profileTotalScore').textContent=scoreTotal.toLocaleString('fr-FR');$('#profileWins').textContent=save.wins||0;if($('#profileFriendCode'))$('#profileFriendCode').textContent=save.social.friendCode;if($('#profileFriends'))$('#profileFriends').textContent=save.social.friends.length;if($('#profileInfinite'))$('#profileInfinite').textContent=Number(save.infiniteBest||0).toLocaleString('fr-FR');if($('#profileSkin'))$('#profileSkin').textContent=(SKINS.find(s=>s.id===save.skins.active)||SKINS[0]).name;$('#homeRank').textContent=isAdmin?'ADMIN':stars>=40?'Maître Pop':stars>=20?'Expert Pop':'Explorateur';if($('#tutorialLevelBtn'))$('#tutorialLevelBtn').textContent=save.tutorialDone?'🎓 Rejouer le tutoriel':'🎓 Tutoriel obligatoire';if($('#adminBtn'))$('#adminBtn').classList.toggle('hidden',!isAdmin);updateCurrencies();updatePremiumHome()}
 function authError(e){
   const map={
     'auth/email-already-in-use':'Cet email possède déjà un compte.',
@@ -256,8 +295,72 @@ function authError(e){
 function setupAuth(){const switchMode=m=>{authMode=m;$('#loginTab').classList.toggle('active',m==='login');$('#registerTab').classList.toggle('active',m==='register');$('#usernameLabel').classList.toggle('hidden',m!=='register');$('#usernameInput').required=m==='register';$('#authSubmit').textContent=m==='login'?'Entrer dans Poporia':'Créer mon compte';$('#passwordInput').autocomplete=m==='login'?'current-password':'new-password';$('#authMessage').textContent=''};$('#loginTab').onclick=()=>switchMode('login');$('#registerTab').onclick=()=>switchMode('register');$('#authForm').onsubmit=async e=>{e.preventDefault();const email=$('#emailInput').value.trim(),pass=$('#passwordInput').value,pseudo=$('#usernameInput').value.trim();$('#authSubmit').disabled=true;$('#authMessage').textContent='Connexion...';try{if(authMode==='register'){const cred=await createUserWithEmailAndPassword(auth,email,pass);await updateAuthProfile(cred.user,{displayName:pseudo||email.split('@')[0]});user=cred.user}else await signInWithEmailAndPassword(auth,email,pass)}catch(err){$('#authMessage').textContent=authError(err)}finally{$('#authSubmit').disabled=false}};$('#guestBtn').onclick=async()=>{if(auth.currentUser)await signOut(auth);guest=true;user=null;isAdmin=false;save=localLoad();normalizeSave();applySkin();ensureDailyMissions();updateProfile();updateNotificationBadge();loadEvents();showScreen('homeScreen')}}
 
 function worldForLevel(n){return n<=10?0:n<=20?1:n<=30?2:n<=40?3:n<=50?4:n<=60?5:n<=70?6:7}
-function renderWorldSwitcher(){const e=$('#worldSwitcher');e.innerHTML='';WORLDS.forEach(w=>{const unlocked=save.unlocked>=w.start,btn=document.createElement('button');btn.className='world-chip'+(currentWorld===w.id?' active':'')+(!unlocked?' locked':'');btn.innerHTML=`<span>${w.icon}</span><b>${w.short}</b><small>${unlocked?'⏳ '+countdownShort():`🔒 Niveau ${w.start-1}`}</small>`;if(unlocked)btn.onclick=()=>{currentWorld=w.id;renderMap()};e.appendChild(btn)});const soon=[['🏔️','Peak']];soon.forEach(([icon,name])=>{const b=document.createElement('button');b.className='world-chip locked';b.innerHTML=`<span>${icon}</span><b>${name}</b><small>Bientôt</small>`;e.appendChild(b)})}
-function renderMap(){currentWorld=Math.min(currentWorld,worldForLevel(save.unlocked));const w=WORLDS[currentWorld];const ms=$('#mapScreen');ms.classList.remove('world-city','world-forest','world-caves','world-beach','world-sky','world-volcano','world-galaxy','world-royal');ms.classList.add(currentWorld===0?'world-city':currentWorld===1?'world-forest':currentWorld===2?'world-caves':currentWorld===3?'world-beach':currentWorld===4?'world-sky':currentWorld===5?'world-volcano':currentWorld===6?'world-galaxy':'world-royal');$('#worldNumber').textContent=`MONDE ${w.id+1}`;$('#worldName').textContent=w.name;$('#worldSubtitle').textContent=w.subtitle;renderWorldSwitcher();const map=$('#levelMap');map.innerHTML='';for(let n=w.start;n<=w.end;n++){const i=n-1,locked=n>save.unlocked,stars=save.stars[n]||0,btn=document.createElement('button');btn.className='level-node'+(locked?' locked':'')+(n===save.unlocked?' current':'');const boss=BOSS_LEVELS.has(n),special=SPECIAL_LEVELS.has(n);btn.classList.toggle('boss-node',boss);btn.classList.toggle('special-node',special);btn.innerHTML=`<div class="node-stars">${stars?'⭐'.repeat(stars)+'☆'.repeat(3-stars):'☆☆☆'}</div><span>${n}</span>${boss?'<i class="node-badge boss-badge">👑</i>':special?'<i class="node-badge special-badge">✦</i>':levels[i].time?'<i class="node-badge timer-badge">⏱️</i>':levels[i].goal.type==='ice'?'<i class="node-badge">❄</i>':''}${locked?'<div class="node-lock">🔒</div>':''}`;if(!locked)btn.onclick=()=>startLevel(i);map.appendChild(btn)}}
+function worldAccess(w){
+  const stars=totalStars(),levelOk=save.unlocked>=w.start;
+  return {stars,levelOk,starOk:stars>=(w.starsRequired||0),unlocked:levelOk&&stars>=(w.starsRequired||0)}
+}
+function worldLockReason(w){
+  const a=worldAccess(w),parts=[];
+  if(!a.levelOk)parts.push(`niveau ${w.start-1}`);
+  if(!a.starOk)parts.push(`${w.starsRequired} étoiles`);
+  return parts.join(' + ')
+}
+function renderWorldSwitcher(){
+  const e=$('#worldSwitcher');e.innerHTML='';
+  WORLDS.forEach(w=>{
+    const a=worldAccess(w),btn=document.createElement('button');
+    btn.className='world-chip world-chip-v7'+(currentWorld===w.id?' active':'')+(!a.unlocked?' locked':'');
+    const starText=w.starsRequired?`<span class="world-star-req">★ ${a.stars}/${w.starsRequired}</span>`:`<span class="world-star-req ready">★ Libre</span>`;
+    btn.innerHTML=`<span class="world-chip-icon">${w.icon}</span><div class="world-chip-copy"><b>${w.short}</b><small>${a.unlocked?'Accessible':`🔒 ${worldLockReason(w)}`}</small></div>${starText}`;
+    if(a.unlocked)btn.onclick=()=>{currentWorld=w.id;renderMap()};
+    else btn.onclick=()=>toast(`🔒 ${w.name} · requis : ${worldLockReason(w)}`);
+    e.appendChild(btn)
+  });
+  const b=document.createElement('button');b.className='world-chip world-chip-v7 locked coming-soon';b.innerHTML='<span class="world-chip-icon">🏔️</span><div class="world-chip-copy"><b>Peak</b><small>Bientôt</small></div><span class="world-star-req">★ ???</span>';e.appendChild(b)
+}
+function renderMap(){
+  const maxWorld=worldForLevel(save.unlocked);
+  currentWorld=Math.min(currentWorld,maxWorld);
+  let w=WORLDS[currentWorld],access=worldAccess(w);
+  if(!access.unlocked&&currentWorld>0){
+    const fallback=[...WORLDS].slice(0,maxWorld+1).reverse().find(x=>worldAccess(x).unlocked)||WORLDS[0];
+    currentWorld=fallback.id;w=fallback;access=worldAccess(w)
+  }
+  const ms=$('#mapScreen');
+  ms.classList.remove('world-city','world-forest','world-caves','world-beach','world-sky','world-volcano','world-galaxy','world-royal');
+  ms.classList.add(`world-${w.theme||'city'}`);
+  $('#worldNumber').textContent=`MONDE ${w.id+1}`;
+  $('#worldName').textContent=w.name;
+  $('#worldSubtitle').textContent=w.subtitle;
+  renderWorldSwitcher();
+
+  let banner=$('#worldAccessBanner');
+  if(!banner){
+    banner=document.createElement('div');banner.id='worldAccessBanner';banner.className='world-access-banner';
+    $('#mapWrap')?.prepend(banner)
+  }
+  if(banner){
+    banner.innerHTML=`<div><span>${w.icon}</span><div><small>MONDE ${w.id+1}</small><b>${w.name}</b><em>${w.subtitle}</em></div></div><div class="world-access-stars"><strong>★ ${access.stars}</strong><small>${w.starsRequired?`${w.starsRequired} requises`:'Monde de départ'}</small></div>`;
+  }
+
+  const map=$('#levelMap');map.innerHTML='';
+  for(let n=w.start;n<=w.end;n++){
+    const i=n-1,locked=n>save.unlocked,stars=save.stars[n]||0,btn=document.createElement('button');
+    btn.className='level-node level-node-v7'+(locked?' locked':'')+(n===save.unlocked?' current':'');
+    const boss=BOSS_LEVELS.has(n),special=SPECIAL_LEVELS.has(n);
+    btn.classList.toggle('boss-node',boss);btn.classList.toggle('special-node',special);
+    const starsHtml=`<div class="node-stars-v7">${[1,2,3].map(s=>`<i class="${s<=stars?'earned':''}">★</i>`).join('')}</div>`;
+    const badge=boss?'<i class="node-badge boss-badge">👑</i>':special?'<i class="node-badge special-badge">✦</i>':levels[i].time?'<i class="node-badge timer-badge">⏱</i>':levels[i].goal.type==='ice'?'<i class="node-badge">❄</i>':'';
+    btn.innerHTML=`${starsHtml}<span class="level-number">${n}</span>${badge}${locked?'<div class="node-lock-v7">🔒</div>':''}`;
+    if(!locked)btn.onclick=()=>startLevel(i);
+
+    const stop=document.createElement('div');stop.className=`level-stop level-stop-${w.theme}`;
+    stop.appendChild(btn);
+    const pedestal=document.createElement('span');pedestal.className='level-pedestal';stop.appendChild(pedestal);
+    if(n<w.end){const bridge=document.createElement('span');bridge.className='level-bridge';bridge.innerHTML='<i></i><i></i><i></i>';stop.appendChild(bridge)}
+    map.appendChild(stop)
+  }
+}
 function countdownShort(){const now=new Date(),end=new Date(now);end.setHours(24,0,0,0);let s=Math.max(0,Math.floor((end-now)/1000));return `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}`}
 function randomColor(){return COLORS[Math.floor(Math.random()*COLORS.length)]}
 function makeGem(color=randomColor(),special=null){return{color,special}}
@@ -289,7 +392,7 @@ function actualStartLevel(i){
   $('#preLevelModal').classList.add('hidden');showScreen('gameScreen');renderGameUI();renderBoard();pendingFeatureTutorials=levelFeatureTutorials(levels[i]);showNextFeatureTutorial();if(!pendingFeatureTutorials.length&&levels[i].time)startLevelTimer(levels[i].time)
 }
 function objectiveText(l=levels[currentLevel]){if(l.goal.type==='score')return`Atteins ${l.goal.target.toLocaleString('fr-FR')} points`;if(l.goal.type==='ice')return`Brise ${l.goal.target} cases gelées`;if(l.goal.type==='crates')return`Détruis ${l.goal.target} caisses`;if(l.goal.type==='specials')return`Crée ${l.goal.target} Pops spéciaux`;if(l.goal.type==='rocks')return`Détruis ${l.goal.target} rochers`;if(l.goal.type==='fog')return`Dissipe ${l.goal.target} cases de brouillard`;if(l.goal.type==='lava')return`Nettoie ${l.goal.target} cases de lave`;return`Collecte ${l.goal.target} Pops ${POP_INFO[l.goal.color].name}`}
-function renderGameUI(){const l=levels[currentLevel],n=currentLevel+1;if(infiniteMode){$('#gameLevelLabel').textContent='♾️ Mode Infini';$('#objectiveLabel').textContent='Fais le meilleur score possible';$('#movesLeft').textContent=moves;$('#scoreValue').textContent=score.toLocaleString('fr-FR');$('#objectiveProgress').innerHTML=`<div class="obj-chip"><span>♾️ Record</span><span>${Number(save.infiniteBest||0).toLocaleString('fr-FR')}</span></div>`;$('#scoreProgress').style.width=Math.min(100,(score%25000)/25000*100)+'%';$('#bossMeter').classList.add('hidden');updateBoosterStates();return}if(tutorialMode){$('#gameLevelLabel').textContent='🎓 Niveau 0 · Tutoriel';$('#objectiveLabel').textContent='Apprends les règles de Poporia';$('#movesLeft').textContent='∞';$('#scoreValue').textContent=score.toLocaleString('fr-FR');$('#objectiveProgress').innerHTML='<div class="obj-chip"><span>🎓 Démonstration</span><span>Apprends en jouant</span></div>';$('#bossMeter').classList.add('hidden');updateBoosterStates();return}$('#gameLevelLabel').textContent=BOSS_LEVELS.has(n)?`👑 Boss · Niveau ${n}`:SPECIAL_LEVELS.has(n)?`✨ Spécial · Niveau ${n}`:`Niveau ${n}`;$('#objectiveLabel').textContent=objectiveText(l);$('#movesLeft').textContent=moves;$('#scoreValue').textContent=score.toLocaleString('fr-FR');renderObjective();renderStars();$('#scoreProgress').style.width=Math.min(100,score/l.stars[2]*100)+'%';const bm=$('#bossMeter');if(BOSS_LEVELS.has(n)){bm.classList.remove('hidden');let target=l.goal.target,hp;if(l.goal.type==='score')hp=Math.max(0,target-score);else if(l.goal.type==='ice')hp=Math.max(0,ice.size);else hp=Math.max(0,target-(collected[l.goal.color]||0));$('#bossHp').textContent=hp.toLocaleString('fr-FR');$('#bossFill').style.width=Math.max(0,Math.min(100,hp/target*100))+'%'}else bm.classList.add('hidden');updateBoosterStates()}
+function renderGameUI(){const l=levels[currentLevel],n=currentLevel+1;if(infiniteMode){$('#gameLevelLabel').textContent='♾️ Mode Infini';$('#objectiveLabel').textContent='Fais le meilleur score possible';$('#movesLeft').textContent=moves;$('#scoreValue').textContent=score.toLocaleString('fr-FR');$('#objectiveProgress').innerHTML=`<div class="obj-chip"><span>♾️ Record</span><span>${Number(save.infiniteBest||0).toLocaleString('fr-FR')}</span></div>`;$('#scoreProgress').style.width=Math.min(100,(score%25000)/25000*100)+'%';$('#bossMeter').classList.add('hidden');updateBoosterStates();updateMobileGameSummary();return}if(tutorialMode){$('#gameLevelLabel').textContent='🎓 Niveau 0 · Tutoriel';$('#objectiveLabel').textContent='Apprends les règles de Poporia';$('#movesLeft').textContent='∞';$('#scoreValue').textContent=score.toLocaleString('fr-FR');$('#objectiveProgress').innerHTML='<div class="obj-chip"><span>🎓 Démonstration</span><span>Apprends en jouant</span></div>';$('#bossMeter').classList.add('hidden');updateBoosterStates();updateMobileGameSummary();return}$('#gameLevelLabel').textContent=BOSS_LEVELS.has(n)?`👑 Boss · Niveau ${n}`:SPECIAL_LEVELS.has(n)?`✨ Spécial · Niveau ${n}`:`Niveau ${n}`;$('#objectiveLabel').textContent=objectiveText(l);$('#movesLeft').textContent=moves;$('#scoreValue').textContent=score.toLocaleString('fr-FR');renderObjective();renderStars();$('#scoreProgress').style.width=Math.min(100,score/l.stars[2]*100)+'%';const bm=$('#bossMeter');if(BOSS_LEVELS.has(n)){bm.classList.remove('hidden');let target=l.goal.target,hp;if(l.goal.type==='score')hp=Math.max(0,target-score);else if(l.goal.type==='ice')hp=Math.max(0,ice.size);else hp=Math.max(0,target-(collected[l.goal.color]||0));$('#bossHp').textContent=hp.toLocaleString('fr-FR');$('#bossFill').style.width=Math.max(0,Math.min(100,hp/target*100))+'%'}else bm.classList.add('hidden');updateBoosterStates();updateMobileGameSummary()}
 function renderObjective(){const g=levels[currentLevel].goal,e=$('#objectiveProgress');if(g.type==='score')e.innerHTML=`<div class="obj-chip"><span>🏆 Score</span><span>${score.toLocaleString('fr-FR')} / ${g.target.toLocaleString('fr-FR')}</span></div>`;else if(g.type==='ice')e.innerHTML=`<div class="obj-chip"><span>❄️ Glace</span><span>${g.target-ice.size} / ${g.target}</span></div>`;else if(g.type==='crates')e.innerHTML=`<div class="obj-chip"><span>📦 Caisses</span><span>${Math.max(0,g.target-crates.size)} / ${g.target}</span></div>`;else if(g.type==='specials')e.innerHTML=`<div class="obj-chip"><span>✨ Pops spéciaux</span><span>${Math.min(specialsCreated,g.target)} / ${g.target}</span></div>`;else if(g.type==='rocks')e.innerHTML=`<div class="obj-chip"><span>🪨 Rochers</span><span>${Math.max(0,g.target-rocks.size)} / ${g.target}</span></div>`;else if(g.type==='fog')e.innerHTML=`<div class="obj-chip"><span>🌫️ Brouillard</span><span>${Math.max(0,g.target-fog.size)} / ${g.target}</span></div>`;else if(g.type==='lava')e.innerHTML=`<div class="obj-chip"><span>🌋 Lave</span><span>${Math.max(0,g.target-lava.size)} / ${g.target}</span></div>`;else{const v=collected[g.color]||0;e.innerHTML=`<div class="obj-chip"><i class="pop-dot ${g.color}">${POP_INFO[g.color].symbol}</i><span>${Math.min(v,g.target)} / ${g.target}</span></div>`}if(g.type!=='crates'&&crates.size)e.innerHTML+=`<div class="obj-chip"><span>📦 Caisses</span><span>${crates.size}</span></div>`;if(chains.size)e.innerHTML+=`<div class="obj-chip obstacle-chip"><span>⛓️ Chaînes</span><span>${chains.size}</span></div>`;if(slime.size)e.innerHTML+=`<div class="obj-chip obstacle-chip"><span>🫧 Gelée</span><span>${slime.size}</span></div>`;if(g.type!=='rocks'&&rocks.size)e.innerHTML+=`<div class="obj-chip obstacle-chip"><span>🪨 Rochers</span><span>${rocks.size}</span></div>`;if(g.type!=='fog'&&fog.size)e.innerHTML+=`<div class="obj-chip obstacle-chip"><span>🌫️ Brouillard</span><span>${fog.size}</span></div>`;if(g.type!=='lava'&&lava.size)e.innerHTML+=`<div class="obj-chip obstacle-chip"><span>🌋 Lave</span><span>${lava.size}</span></div>`}
 function currentStars(){const t=levels[currentLevel].stars;return score>=t[2]?3:score>=t[1]?2:score>=t[0]?1:0}
 function renderStars(){const s=currentStars();[1,2,3].forEach(i=>$('#star'+i).textContent=i<=s?'★':'☆')}
@@ -442,7 +545,7 @@ async function attemptSwap(a,b){
   moves--;await resolveBoard();busy=false;renderGameUI();if(tutorialMode)tutorialActionCompleted();checkEnd()
 }
 async function resolveBoard(){let chain=0;while(true){const lines=linesOfMatches(),squares=squaresOfMatches();if(!lines.length&&!squares.length)break;chain++;let matches=new Set();lines.forEach(l=>l.cells.forEach(p=>matches.add(key(p.r,p.c))));squares.forEach(s=>s.cells.forEach(p=>matches.add(key(p.r,p.c))));const create=creationForPatterns(lines,squares);if(create)matches.delete(key(create.r,create.c));matches=addSpecialEffects(matches);await clearSet(matches,chain,create);await animateGravity();renderGameUI();await sleep(90)}if(!hasPossibleMove())await shuffleBoard(true,false)}
-async function clearSet(matches,chain,create){breakIce(matches);for(const k of matches){const[r,c]=parseKey(k),g=board[r]?.[c];if(g?.color)collected[g.color]=(collected[g.color]||0)+1}score+=matches.size*120*chain+(chain>1?chain*260:0);if(chain>2)showCombo(`POP COMBO x${chain}!`);else if(chain>1)showCombo(`COMBO x${chain}!`);else if(matches.size>=7)showCombo('POP-TASTIQUE !');else if(matches.size>=4)showCombo('SUPER !');animatePop(matches);await sleep(185);matches.forEach(k=>{const[r,c]=parseKey(k);board[r][c]=null});if(create){specialsCreated++;const base=board[create.r]?.[create.c]||makeGem(randomColor());board[create.r][create.c]=makeGem(create.type==='rainbow'?'purple':base.color,create.type);fx('create',create.r,create.c)}renderBoard()}
+async function clearSet(matches,chain,create){breakIce(matches);for(const k of matches){const[r,c]=parseKey(k),g=board[r]?.[c];if(g?.color)collected[g.color]=(collected[g.color]||0)+1}score+=matches.size*120*chain+(chain>1?chain*260:0);if(chain>2)showCombo(`POP COMBO x${chain}!`);else if(chain>1)showCombo(`COMBO x${chain}!`);else if(matches.size>=7)showCombo('POP-TASTIQUE !');else if(matches.size>=4)showCombo('SUPER !');animatePop(matches);await sleep(185);matches.forEach(k=>{const[r,c]=parseKey(k);board[r][c]=null});if(create){specialsCreated++;showGameMicroToast('✨ Pop spécial créé !');const base=board[create.r]?.[create.c]||makeGem(randomColor());board[create.r][create.c]=makeGem(create.type==='rainbow'?'purple':base.color,create.type);fx('create',create.r,create.c)}renderBoard()}
 function animatePop(set){for(const k of set){const[r,c]=parseKey(k),g=$(`.cell[data-r="${r}"][data-c="${c}"] .gem`);if(g)g.classList.add('pop')}}
 
 function spawnParticles(r,c,count=18){
@@ -502,7 +605,7 @@ function startLevelTimer(seconds){
   const box=$('#levelTimerBox');if(box)box.classList.remove('hidden');updateLevelTimerUI();
   levelTimerId=setInterval(()=>{if(gameEnded||tutorialMode)return;levelTimeLeft--;updateLevelTimerUI();if(levelTimeLeft<=0){stopLevelTimer();if(!gameEnded)finishLevel(false)}},1000)
 }
-function updateLevelTimerUI(){if($('#levelTimerValue')&&levelTimeLeft!=null){const m=Math.floor(levelTimeLeft/60),s=levelTimeLeft%60;$('#levelTimerValue').textContent=`${m}:${String(s).padStart(2,'0')}`;$('#levelTimerBox').classList.toggle('danger',levelTimeLeft<=15)}}
+function updateLevelTimerUI(){updateMobileGameSummary();if($('#levelTimerValue')&&levelTimeLeft!=null){const m=Math.floor(levelTimeLeft/60),s=levelTimeLeft%60;$('#levelTimerValue').textContent=`${m}:${String(s).padStart(2,'0')}`;$('#levelTimerBox').classList.toggle('danger',levelTimeLeft<=15)}}
 function checkEnd(){if(tutorialMode)return;if(infiniteMode){if(moves<=0)finishInfinite();return}if(goalReached())finishLevel(true);else if(moves<=0)finishLevel(false)}
 
 function worldRewardForLevel(n){
@@ -1017,7 +1120,46 @@ async function adminBonus(){
 async function adminUnlockAll(){
   if(!isAdmin)return;save.unlocked=levels.length;await adminSaveNow();$('#adminLevelValue').value=save.unlocked;toast('Tous les niveaux débloqués')
 }
+
+function mobileSetNav(screenId){
+  if(!$('#mobileBottomNav'))return;
+  const map={homeScreen:'mobileNavHome',mapScreen:'mobileNavMap'};
+  $$('#mobileBottomNav button').forEach(b=>b.classList.remove('active'));
+  const id=map[screenId];if(id&&$('#'+id))$('#'+id).classList.add('active');
+  $('#mobileBottomNav').classList.toggle('hidden-nav',screenId==='gameScreen'||screenId==='authScreen')
+}
+function mobileGoHome(){showScreen('homeScreen');mobileSetNav('homeScreen')}
+function mobileGoMap(){
+  if(!save)return;
+  if(!save.tutorialDone){startTutorialLevel();return}
+  currentWorld=worldForLevel(save.unlocked);showScreen('mapScreen');renderMap();mobileSetNav('mapScreen')
+}
+function openMobileHub(){if($('#mobileMorePanel'))$('#mobileMorePanel').classList.remove('hidden')}
+function closeMobileHub(){if($('#mobileMorePanel'))$('#mobileMorePanel').classList.add('hidden')}
+function toggleMobileBoosters(){
+  const panel=$('#boostersPanel');if(!panel)return;
+  panel.classList.toggle('mobile-open');
+  $('#mobileBoostersToggle')?.classList.toggle('active',panel.classList.contains('mobile-open'))
+}
+
 setupAuth();setupBoardControls();worldCountdown();
+
+$('#homeProfileQuick').onclick=()=>{$('#profilePanel').classList.remove('hidden');updateProfile()};
+$('#mobileMoreBtn').onclick=openMobileHub;
+$('#closeMobileMore').onclick=closeMobileHub;
+$('#mobileMorePanel').onclick=e=>{if(e.target.id==='mobileMorePanel')closeMobileHub()};
+$('#mobileNavHome').onclick=mobileGoHome;
+$('#mobileNavMap').onclick=mobileGoMap;
+$('#mobileNavShop').onclick=()=>{openShop();$$('#mobileBottomNav button').forEach(b=>b.classList.remove('active'));$('#mobileNavShop').classList.add('active')};
+$('#mobileNavSocial').onclick=()=>{openMobileHub();$$('#mobileBottomNav button').forEach(b=>b.classList.remove('active'));$('#mobileNavSocial').classList.add('active')};
+$('#mobileNavProfile').onclick=()=>{$('#profilePanel').classList.remove('hidden');updateProfile();$$('#mobileBottomNav button').forEach(b=>b.classList.remove('active'));$('#mobileNavProfile').classList.add('active')};
+$('#mobileHubFriends').onclick=()=>{closeMobileHub();openFriends()};
+$('#mobileHubClan').onclick=()=>{closeMobileHub();openClan()};
+$('#mobileHubRanks').onclick=()=>{closeMobileHub();openLeaderboard()};
+$('#mobileHubAchievements').onclick=()=>{closeMobileHub();openAchievements()};
+$('#mobileHubSkins').onclick=()=>{closeMobileHub();openSkins()};
+$('#mobileHubSeasonRank').onclick=()=>{closeMobileHub();openSeasonRank()};
+$('#mobileBoostersToggle').onclick=toggleMobileBoosters;
 $('#promoRedeemBtn').onclick=redeemPromo;$('#bombBtn').onclick=()=>deployPurchasedSpecial('bomb');$('#rocketBtn').onclick=()=>deployPurchasedSpecial('rocket');$('#rainbowBtn').onclick=()=>deployPurchasedSpecial('rainbow');$('#modalContinueBtn').onclick=continueFiveMoves;$('#modalRetryBtn').onclick=()=>{confirmFailedLife();$('#modal').classList.add('hidden');openPreLevel(currentLevel)};
 $('#featureTutorialNext').onclick=acceptFeatureTutorial;$('#tutorialLevelBtn').onclick=startTutorialLevel;$('#coachNextBtn').onclick=finishTutorial;$('#tutorialBtn').onclick=()=>$('#tutorialPanel').classList.remove('hidden');
 $('#closeTutorial').onclick=()=>$('#tutorialPanel').classList.add('hidden');
